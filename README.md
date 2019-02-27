@@ -1,6 +1,9 @@
 # addressBook
 使用技术  Redis-SpringBoot-AmazeUI
 
+后端框架：SpringBoot        
+前端框架：AmazeUI                    
+数据库  ：Redis                     
 # 学习项目 
 了解Redis
 使用RedisUtil对Redis操作
