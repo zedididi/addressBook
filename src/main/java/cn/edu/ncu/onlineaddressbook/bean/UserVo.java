@@ -1,4 +1,4 @@
-package cn.edu.ncu.onlineaddressbook.entity;
+package cn.edu.ncu.onlineaddressbook.bean;
 
 import java.io.Serializable;
 

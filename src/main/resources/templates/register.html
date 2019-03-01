@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<head lang="en" xmlns:th="http://www.thymeleaf.org">
+	<meta charset="UTF-8">
+	<title>Login Page | Amaze UI Example</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="alternate icon" type="image/png" href="/assets/i/favicon.png">
+	<link rel="stylesheet" href="/assets/css/amazeui.min.css"/>
+	<style>
+		.header {
+			text-align: center;
+		}
+		.header h1 {
+			font-size: 200%;
+			color: #333;
+			margin-top: 30px;
+		}
+		.header p {
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+<div class="header">
+	<div class="am-g">
+		<h1>NCU 网上通讯录</h1>
+		<p>NCU online address book<br/>设计简单，使用简便</p>
+	</div>
+	<hr />
+</div>
+<div class="am-g">
+	<div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+		<h2 style="color: #23ccfe">注 册</h2>
+		<hr>
+		<!-- <div class="am-btn-group">
+		   <a href="#" class="am-btn am-btn-secondary am-btn-sm"><i class="am-icon-github am-icon-sm"></i> Github</a>
+		   <a href="#" class="am-btn am-btn-success am-btn-sm"><i class="am-icon-google-plus-square am-icon-sm"></i> Google+</a>
+		   <a href="#" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-stack-overflow am-icon-sm"></i> stackOverflow</a>
+		 </div>-->
+		<br>
+		<br>
+		
+		<form method="post" class="am-form"  action="/userinfo/register">
+			<label for="name">真实姓名:</label>
+			<input type="text" name="name" id="name" value="">
+			<br>
+			<label for="password">密码:</label>
+			<input type="text" name="password" id="password" value="">
+			<br>
+			<label for="major">专业:</label>
+			<input type="text" name="major" id="major" value="">
+			<br>
+			<label for="classs">班级:</label>
+			<input type="text" name="classs" id="classs" value="">
+			<br>
+			<label for="enrollmentYear">入学年份:</label>
+			<select  name="enrollmentYear" id="enrollmentYear">
+				<option value="1996">1996</option>
+				<option value="1997">1997</option>
+				<option value="1998">1998</option>
+				<option value="1999">1999</option>
+				<option value="2000">2000</option>
+				<option value="2001">2001</option>
+				<option value="2002">2002</option>
+				<option value="2003">2003</option>
+				<option value="2004">2004</option>
+				<option value="2005">2005</option>
+				<option value="2006">2006</option>
+				<option value="2007">2007</option>
+				<option value="2008">2008</option>
+				<option value="2009">2009</option>
+				<option value="2010">2010</option>
+				<option value="2011">2011</option>
+				<option value="2012">2012</option>
+				<option value="2013">2013</option>
+				<option value="2014">2014</option>
+				<option value="2015">2015</option>
+				<option value="2016">2016</option>
+				<option value="2017">2017</option>
+				<option value="2018">2018</option>
+				<option value="2019">2019</option>
+				<option value="2020">2020</option>
+			</select>
+			<br>
+			<label for="particularYear">毕业年份:</label>
+			<select  name="particularYear" id="particularYear">
+				<option value="1996">1996</option>
+				<option value="1997">1997</option>
+				<option value="1998">1998</option>
+				<option value="1999">1999</option>
+				<option value="2000">2000</option>
+				<option value="2001">2001</option>
+				<option value="2002">2002</option>
+				<option value="2003">2003</option>
+				<option value="2004">2004</option>
+				<option value="2005">2005</option>
+				<option value="2006">2006</option>
+				<option value="2007">2007</option>
+				<option value="2008">2008</option>
+				<option value="2009">2009</option>
+				<option value="2010">2010</option>
+				<option value="2011">2011</option>
+				<option value="2012">2012</option>
+				<option value="2013">2013</option>
+				<option value="2014">2014</option>
+				<option value="2015">2015</option>
+				<option value="2016">2016</option>
+				<option value="2017">2017</option>
+				<option value="2018">2018</option>
+				<option value="2019">2019</option>
+				<option value="2020">2020</option>
+			</select>
+			<br>
+			<label for="company">就业单位:</label>
+			<input type="text" name="company" id="company" value="">
+			<br>
+			<label for="city">城市:</label>
+			<input type="text" name="city" id="city" value="">
+			<br>
+			<label for="address">联系方式:</label>
+			<input type="text" name="address" id="address" value="">
+			<br>
+			<label for="email">Email:</label>
+			<input type="text" name="email" id="email" value="">
+			<br>
+			<div class="am-cf">
+				<input type="submit" name="" value="注册" class="am-btn am-btn-primary am-btn-sm am-fl am-round">
+				<a href="/login"><input type="button" name="" value="登陆 ^_^? " class="am-btn am-btn-default am-btn-sm am-fr am-round"></a>      </div>
+		</form>
+		<hr>
+		<p>© 2019 AllMobilize, Inc. Licensed under LIU license.</p>
+	</div>
+</div>
+</body>
+</html>

@@ -3,6 +3,7 @@ package cn.edu.ncu.onlineaddressbook.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
  * @Date： 2019/2/26 10:42
  */
 
-@Component
+@Service
 public class RedisService {
 
     @Autowired

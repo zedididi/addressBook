@@ -1,6 +1,6 @@
 package cn.edu.ncu.onlineaddressbook.config;
 
-import cn.edu.ncu.onlineaddressbook.entity.UserVo;
+import cn.edu.ncu.onlineaddressbook.bean.UserVo;
 import cn.edu.ncu.onlineaddressbook.service.RedisService;
 import cn.edu.ncu.onlineaddressbook.util.RedisKeyUtil;
 import org.junit.Test;
