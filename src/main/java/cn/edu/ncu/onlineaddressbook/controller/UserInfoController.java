@@ -23,7 +23,7 @@ public class UserInfoController {
 
 
     @PostMapping("/register")
-    public String register(UserInfo userInfo){
+    public String  register(UserInfo userInfo){
 
         System.out.println(userInfo);
 

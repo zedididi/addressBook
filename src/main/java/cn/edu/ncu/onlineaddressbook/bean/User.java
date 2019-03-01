@@ -19,7 +19,6 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 
-    private static final String Table="User";
 
     @Id
     private String username;
@@ -30,6 +29,9 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "enabled")
+    private int enabled;
+
     public User() {
     }
 
@@ -37,6 +39,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.name = name;
+        this.enabled=0;
     }
 
     public String getUsername() {
@@ -63,12 +66,21 @@ public class User {
         this.name = name;
     }
 
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
