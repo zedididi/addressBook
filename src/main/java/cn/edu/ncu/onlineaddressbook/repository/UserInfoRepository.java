@@ -4,6 +4,7 @@ import cn.edu.ncu.onlineaddressbook.bean.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  * @Author： LiuZedi
  * @Date： 2019/2/28 22:10
  */
+
+@Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo,String> {
 
 
@@ -23,7 +26,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo,String> {
     @Transactional
     @Modifying
     @Query(value = "update user_info set password=?1,name=?2,major=?3,classs=?4,enrollment_year=?5,particular_year=?6,company=?7,city=?8,address=?9,email=?10 where username=?11",nativeQuery = true)
-    int  updatePasswordOfUser(String password,String name,String major,String classs,String enrollmentYear,String particularYear,String company,String city,String address,String email,String username);
+    int  updateUser(String password,String name,String major,String classs,String enrollmentYear,String particularYear,String company,String city,String address,String email,String username);
 
     @Query(value = "select ui.* from user_info ui where ui.name=?1",nativeQuery = true)
      List<UserInfo> getUserInfoByName(String name);

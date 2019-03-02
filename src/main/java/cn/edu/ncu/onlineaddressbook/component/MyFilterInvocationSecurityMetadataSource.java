@@ -39,7 +39,7 @@ public class MyFilterInvocationSecurityMetadataSource implements FilterInvocatio
         logger.info("用户请求的地址是：{} ",requestUrl);
 
         //如果登录页面不需要权限
-        if ("/login".equals(requestUrl)||"/login-error".equals(requestUrl)||"/register".equals(requestUrl)||"/userinfo/register".equals(requestUrl))
+        if ("/login".equals(requestUrl)||"/login-error".equals(requestUrl)||"/register".equals(requestUrl)||"/re".equals(requestUrl))
             return null;
 
         Resource resource=resourceService.findResourceByUrl(requestUrl);

@@ -34,4 +34,12 @@ public class UserInfoService {
     public List<UserInfo> getUserInfoByClasss(String classs){
         return userInfoRepository.getUserInfoByClasss(classs);
     }
+
+    public int insertUserInfo(UserInfo userInfo){
+        return userInfoRepository.insertUserInfo(userInfo.getUsername(),userInfo.getPassword(),userInfo.getName(),userInfo.getMajor(),userInfo.getClasss(),userInfo.getEnrollmentYear(),userInfo.getParticularYear(),userInfo.getCompany(),userInfo.getCity(),userInfo.getAddress(),userInfo.getEmail());
+    }
+
+    public int updateUser(UserInfo userInfo){
+        return userInfoRepository.updateUser(userInfo.getPassword(),userInfo.getName(),userInfo.getMajor(),userInfo.getClasss(),userInfo.getEnrollmentYear(),userInfo.getParticularYear(),userInfo.getCompany(),userInfo.getCity(),userInfo.getAddress(),userInfo.getEmail(),userInfo.getUsername());
+    }
 }

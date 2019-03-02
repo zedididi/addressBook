@@ -3,11 +3,13 @@ package cn.edu.ncu.onlineaddressbook.bean;
 import cn.edu.ncu.onlineaddressbook.service.RoleService;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.List;
  * @Author： LiuZedi
  * @Date： 2019/3/1 8:30
  */
-
 public class UserDetailsImpl implements UserDetails {
 
     private String username;
@@ -35,22 +36,22 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user){
         this.username=user.getUsername();
         this.password=user.getPassword();
-        this.enabled=true;
+        if (user.getEnabled()==0)
+            this.enabled=false;
+        else
+            this.enabled=true;
     }
 
     public UserDetailsImpl(User user,List<Role> roles){
         this.username=user.getUsername();
         this.password=user.getPassword();
         this.roles=roles;
-        this.enabled=true;
+        if (user.getEnabled()==0)
+            this.enabled=false;
+        else
+            this.enabled=true;
     }
 
-    public UserDetailsImpl(User user, boolean enabled, List<Role> roles) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.enabled = enabled;
-        this.roles = roles;
-    }
 
     public List<Role> getRoles() {
         return roles;

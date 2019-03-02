@@ -2,6 +2,7 @@ package cn.edu.ncu.onlineaddressbook.bean;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 @Setter
 @Getter
 @Table(name = "users")
+@Proxy(lazy = false)
 public class User {
 
 
@@ -40,6 +42,13 @@ public class User {
         this.password = password;
         this.name = name;
         this.enabled=0;
+    }
+
+    public User(String username, String password, String name, int enabled) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.enabled = enabled;
     }
 
     public String getUsername() {

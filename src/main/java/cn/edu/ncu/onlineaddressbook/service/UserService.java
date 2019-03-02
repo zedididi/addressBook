@@ -41,6 +41,21 @@ public class UserService implements UserDetailsService{
         return userRepository.getOne(username);
     }
 
+    public int insertUser(User user){
+        return userRepository.insertUser(user.getUsername(),user.getPassword(),user.getName(),user.getEnabled());
+    }
+
+    public int updatePasswordOfUser(String pasword,String username){
+        return userRepository.updatePasswordOfUser(pasword,username);
+    }
+
+    public int updateEnabledOfUser(int enabled,String username){
+        return userRepository.updateEnabledOfUser(enabled,username);
+    }
+
+    public List<User> getUsersByName(String name){
+        return userRepository.getUsersByName(name);
+    }
 
     @Override
     //重写UserDetailsService接口里面的抽象方法
@@ -51,11 +66,12 @@ public class UserService implements UserDetailsService{
 
         User user=getUserByUsername(username);
 
+        logger.info("用户信息：{}",user);
         if(user==null)
             throw new UsernameNotFoundException("没有该用户");
 
         //查到User后将其封装为UserDetails的实现类的实例供程序调用
         //用该User和它对应的Role实体们构造UserDetails的实现类
-        return new UserDetailsImpl(user,false,roleService.getRolesOfUser(user.getUsername()));
+        return new UserDetailsImpl(user,roleService.getRolesOfUser(user.getUsername()));
     }
 }

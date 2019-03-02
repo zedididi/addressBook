@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<head lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" >
   <meta charset="UTF-8">
   <title>Login Page | Amaze UI Example</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,10 +46,10 @@
 
     <form method="post" class="am-form"  action="/login">
       <label for="username">账号:</label>
-      <input type="text" name="username" id="username" value="">
+      <input type="text" name="username" id="username" value="" required>
       <br>
       <label for="password">密码:</label>
-      <input type="password" name="password" id="password" value="">
+      <input type="password" name="password" id="password" value="" required>
       <br>
       <label for="remember">
         <input id="remember" type="checkbox" name="remember">
@@ -61,7 +62,7 @@
         <a ><input type="button" name="" value="忘记密码 ^_^? " class="am-btn am-btn-default am-btn-sm am-fr am-round"></a>      </div>
     </form>
     <hr>
-    <p>© 2019 AllMobilize, Inc. Licensed under LIU license.</p>
+    <p>© 2019 AllMobilize, Inc. Licensed under MIT license.</p>
   </div>
 </div>
 </body>

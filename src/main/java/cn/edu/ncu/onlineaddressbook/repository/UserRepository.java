@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @Author： LiuZedi
  * @Date： 2019/2/28 22:04
@@ -16,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<User,String> {
 
 
-     User getUserByUsername(String username);
 
-     User getUserByName(String name);
+    List<User> getUsersByName(String name);
 
+    User getUserByUsername(String username);
     @Transactional
     @Modifying
-    @Query(value = "insert into users(username,password,name,enabled) values(?1,?2,?3,?4,?5)",nativeQuery = true)
+    @Query(value = "insert into users(username,password,name,enabled) values(?1,?2,?3,?4)",nativeQuery = true)
      int insertUser(String username,String password,String name,int enabled);
 
     @Transactional

@@ -3,6 +3,7 @@ package cn.edu.ncu.onlineaddressbook.repository;
 import cn.edu.ncu.onlineaddressbook.bean.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
  * @Author： LiuZedi
  * @Date： 2019/2/28 22:05
  */
+
+@Repository
 public interface ResourceRepository extends JpaRepository<Resource,Integer> {
 
 

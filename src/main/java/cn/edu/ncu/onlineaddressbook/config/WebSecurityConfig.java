@@ -66,7 +66,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -158,13 +157,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //AuthenticationManagerBuilder  自定义认证策略
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
+       /* auth
                 .inMemoryAuthentication()
                 .withUser("user").password(new BCryptPasswordEncoder().encode("123123")).roles("ADMIN");
-         //在内存中创建了一个用户，该用户的名称为user，密码为password，用户角色为USER
+         //在内存中创建了一个用户，该用户的名称为user，密码为password，用户角色为USER*/
 
 
-      // auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+       auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
 
