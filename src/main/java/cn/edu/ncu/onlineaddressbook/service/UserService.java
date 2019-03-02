@@ -31,24 +31,24 @@ public class UserService implements UserDetailsService{
     @Autowired
     private RoleService roleService;
 
-    @Transactional
     public List<User> getAllUser(){
         return userRepository.findAll();
     }
 
-    @Transactional
     public User getUserByUsername(String username){
         return userRepository.getOne(username);
     }
 
+    @Transactional
     public int insertUser(User user){
         return userRepository.insertUser(user.getUsername(),user.getPassword(),user.getName(),user.getEnabled());
     }
 
+    @Transactional
     public int updatePasswordOfUser(String pasword,String username){
         return userRepository.updatePasswordOfUser(pasword,username);
     }
-
+    @Transactional
     public int updateEnabledOfUser(int enabled,String username){
         return userRepository.updateEnabledOfUser(enabled,username);
     }

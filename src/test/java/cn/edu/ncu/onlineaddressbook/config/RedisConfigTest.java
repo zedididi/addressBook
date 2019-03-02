@@ -44,7 +44,7 @@ public class RedisConfigTest {
 
     @Test
     public void testObj() throws Exception{
-        UserVo userVo = new UserVo();
+         UserVo userVo = new UserVo();
         userVo.setAddress("上海");
         userVo.setName("测试dfas");
         userVo.setAge(123);

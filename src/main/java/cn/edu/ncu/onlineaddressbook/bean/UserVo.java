@@ -2,7 +2,15 @@ package cn.edu.ncu.onlineaddressbook.bean;
 
 import java.io.Serializable;
 
+/**
+ * @program: onlineAddressBook
+ * @Author： LiuZedi
+ * @Date： 2019/3/2 11:56
+ */
+
+
 public class UserVo implements Serializable {
+
 
     public  static final String Table = "t_user";
 

@@ -18,6 +18,7 @@ import java.util.List;
  * @Author： LiuZedi
  * @Date： 2019/3/1 8:30
  */
+
 public class UserDetailsImpl implements UserDetails {
 
     private String username;
