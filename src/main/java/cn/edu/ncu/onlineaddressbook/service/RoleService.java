@@ -18,12 +18,22 @@ public class RoleService {
     private RoleRepository roleRepository;
 
 
-    //根据用户名查找该用户所有权限
+    /**
+     * 根据用户名查找该用户所有权限
+     *
+     * @param username
+     * @return
+     */
     public List<Role> getRolesOfUser(String username){
         return roleRepository.findRoleOfUser(username);
     }
 
-    //根据resource的主键查找resource允许的所有权限
+    /**
+     * 根据resource的主键查找resource允许的所有权限
+     *
+     * @param resourceId
+     * @return
+     */
     public List<Role> getRoleOfResource(int resourceId){
         return roleRepository.findRolesOfResource(resourceId);
     }

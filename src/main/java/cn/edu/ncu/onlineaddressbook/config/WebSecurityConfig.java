@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -73,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected  void configure(HttpSecurity http) throws Exception {
 
+
         http.authorizeRequests()       //配置安全策略
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
@@ -90,7 +92,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
-                .failureUrl("/login-error")
+               // .failureUrl("/login-error")
+                .failureHandler(new AuthenticationFailureHandler() {
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+                        httpServletResponse.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = httpServletResponse.getWriter();
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("{\"status\":\"error\",\"msg\":\"");
+                        if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
+                            sb.append("用户名或密码输入错误，登录失败!");
+                        } else if (e instanceof DisabledException) {
+                            sb.append("账户还在审核中，登录失败，请联系管理员!");
+                        }else if (e instanceof LockedException)
+                            sb.append("账户被禁用，登录失败，请联系管理员!");
+                        else {
+                            sb.append("登录失败!");
+                        }
+                        sb.append("\"}");
+                        out.write(sb.toString());
+                        out.flush();
+                        out.close();
+                    }
+                })
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {

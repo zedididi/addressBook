@@ -25,10 +25,22 @@ public class ResourceService {
     @Autowired
     private RoleRepository roleRepository;
 
+    /**
+     * 根据url查询权限表
+     *
+     * @param url
+     * @return
+     */
     public Resource findResourceByUrl(String url){
         return resourceRepository.findResourceByUrl(url);
     }
 
+    /**
+     * 根据权限id查询权限表
+     *
+     * @param resourceId
+     * @return
+     */
     public List<Role> getRoles(int resourceId){
         return roleRepository.findRolesOfResource(resourceId);
     }
