@@ -4,7 +4,13 @@ package cn.edu.ncu.onlineaddressbook.config;
 import cn.edu.ncu.onlineaddressbook.component.MyAccessDecisionManager;
 import cn.edu.ncu.onlineaddressbook.component.MyAccessDeniedHandler;
 import cn.edu.ncu.onlineaddressbook.component.MyFilterInvocationSecurityMetadataSource;
+import cn.edu.ncu.onlineaddressbook.service.RoleService;
 import cn.edu.ncu.onlineaddressbook.service.UserService;
+import com.sun.xml.internal.ws.api.policy.PolicyResolver;
+import org.apache.catalina.Session;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +25,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +37,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.SessionCookieConfig;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -50,8 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserService();
     }*/
 
+    private final Logger logger= LoggerFactory.getLogger(this.getClass());
+
    @Autowired
    private UserService userService;
+
+   @Autowired
+   private RoleService roleService;
 
    //接受一个用户的信息和访问一个url所需要的权限，判断该用户是否可以访问
    @Autowired
@@ -96,43 +109,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-                        StringBuffer sb = new StringBuffer();
-                        sb.append("{\"status\":\"error\",\"msg\":\"");
+
+                        String status;
                         if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
-                            sb.append("用户名或密码输入错误，登录失败!");
+                            status="用户名或密码输入错误，登录失败!";
                         } else if (e instanceof DisabledException) {
-                            sb.append("账户还在审核中，登录失败，请联系管理员!");
+                            status="账户还在审核中，登录失败，请联系管理员!";
                         }else if (e instanceof LockedException)
-                            sb.append("账户被禁用，登录失败，请联系管理员!");
+                            status="账户被禁用，登录失败，请联系管理员!";
                         else {
-                            sb.append("登录失败!");
+                           status="登录失败!";
                         }
-                        sb.append("\"}");
-                        out.write(sb.toString());
-                        out.flush();
-                        out.close();
+
+                        logger.info(status);
+                        httpServletRequest.getSession();
+                        httpServletRequest.setAttribute("status",status);
+                        httpServletRequest.getRequestDispatcher("/status").forward(httpServletRequest,httpServletResponse);
+
                     }
                 })
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-//                        ObjectMapper objectMapper = new ObjectMapper();
-                        String s = "{\"status\":\"success\",\"msg\":"  + "}";
-                        out.write(s);
-                        out.flush();
-                        out.close();
+
+                        String username=SecurityContextHolder.getContext().getAuthentication().getName();
+                        if (roleService.getRolesOfUser(username).get(0).getRoleName().equals("ROLE_ADMIN")){
+                            httpServletRequest.setAttribute("username",username);
+                            httpServletRequest.getRequestDispatcher("/admin").forward(httpServletRequest,httpServletResponse);
+                        }
+                        else
+                            System.out.println("USER");
+
                     }
                 })
                 .and()
                 .logout()
                 .permitAll()
                 .and()
-                .csrf()
-                .disable()
+                //解决非thymeleaf的form表单提交被拦截问题
+                .csrf().disable()
                 .exceptionHandling()
                 .accessDeniedHandler(myAccessDeniedHandler);
 

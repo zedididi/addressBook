@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,25 +61,25 @@ public class UserService implements UserDetailsService{
      */
     @Transactional
     public int insertUser(User user){
-        return userRepository.insertUser(user.getUsername(),user.getPassword(),user.getName(),user.getEnabled());
+        return userRepository.insertUser(user.getUsername(),user.getPassword(),user.getName(),user.getEnabled(),new Timestamp(System.currentTimeMillis()),null,0);
     }
 
     /**
      * 根据用户账号名查询用户 修改用户账号密码
      *
-     * @param pasword
+     * @param password
      * @param username
      * @return
      */
     @Transactional
-    public int updatePasswordOfUser(String pasword,String username){
-        return userRepository.updatePasswordOfUser(pasword,username);
+    public int updatePasswordOfUser(String password,String username){
+        return userRepository.updatePasswordOfUser(password,username);
     }
 
     /**
-     * 根据用户账号名查询用户 修改用户状态
+     * 根据用户账号名查询用户 修改用户是否审核通过（审核通过|审核未通过）
      *
-     * @param enabled  0：禁止登录 1：允许登录
+     * @param enabled  0：未通过审核 1：通过审核
      * @param username
      * @return
      */
@@ -86,6 +87,48 @@ public class UserService implements UserDetailsService{
     public int updateEnabledOfUser(int enabled,String username){
         return userRepository.updateEnabledOfUser(enabled,username);
     }
+
+    /**
+     *根据用户账号名查询用户 修改用户状态（禁用|未禁用）
+     *
+     * @param locked  0：禁止登录 1：允许登录
+     * @param username
+     * @return
+     */
+    @Transactional
+    public int updateLockedOfUser(int locked,String username){
+        return userRepository.updateLockedOfUser(locked,username);
+    }
+
+    /**
+     * 根据用户账号名查询用户 更新用户最近登录时间
+     *
+     * @param loginTime
+     * @param username
+     * @return
+     */
+    @Transactional
+    public int updateLoginTimeOfUser(Timestamp loginTime,String username){
+        return userRepository.updateLoginTimeOfUser(loginTime,username);
+    }
+
+    /**
+     * 根据用户账号名查询用户 更新用户登陆次数
+     *
+     * @param loginTimes
+     * @param username
+     * @return
+     */
+    @Transactional
+    public int updateLoginTimesOfUser(int loginTimes,String username){
+        return userRepository.updateLoginTimesOfUser(loginTimes,username);
+    }
+
+    @Transactional
+    public int updateLoginTimeAndLoginTimesOfUser(Timestamp loginTime, int loginTimes, String username){
+        return userRepository.updateLoginTimeAndLoginTimesOfUser(loginTime,loginTimes,username);
+    }
+
 
     /**
      * 根据用户姓名查询用户

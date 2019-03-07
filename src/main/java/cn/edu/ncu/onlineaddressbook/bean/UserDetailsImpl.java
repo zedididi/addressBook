@@ -24,6 +24,7 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
+    private boolean locked;
 
     //包含着用户对应的所有Role，在使用时调用者给对象注入roles
     private List<Role> roles;
@@ -37,20 +38,16 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user){
         this.username=user.getUsername();
         this.password=user.getPassword();
-        if (user.getEnabled()==0)
-            this.enabled=false;
-        else
-            this.enabled=true;
+        this.enabled=getStatus(user.getEnabled());
+        this.locked=getStatus(user.getLocked());
     }
 
     public UserDetailsImpl(User user,List<Role> roles){
         this.username=user.getUsername();
         this.password=user.getPassword();
         this.roles=roles;
-        if (user.getEnabled()==0)
-            this.enabled=false;
-        else
-            this.enabled=true;
+        this.enabled=getStatus(user.getEnabled());
+        this.locked=getStatus(user.getLocked());
     }
 
 
@@ -92,7 +89,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     //判断账号是否被锁定，默认没有锁定
     public boolean isAccountNonLocked() {
-        return true;
+        return locked;
     }
 
     @Override
@@ -108,4 +105,11 @@ public class UserDetailsImpl implements UserDetails {
     }
 
 
+    public boolean getStatus(int status){
+
+        if (status==0)
+            return false;
+        else
+            return true;
+    }
 }
