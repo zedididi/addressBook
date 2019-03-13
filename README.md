@@ -3,7 +3,7 @@
 
 后端框架：SpringBoot -  SpringSecurity                
 前端框架：AmazeUI                    
-数据库  ：Redis                     
+数据库  ：Redis   Mysql                
 # 学习项目 
 了解Redis
 使用RedisUtil对Redis操作                                              
