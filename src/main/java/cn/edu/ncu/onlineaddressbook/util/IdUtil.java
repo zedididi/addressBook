@@ -30,7 +30,7 @@ public class IdUtil {
 
            j++;
            System.out.println("第"+j+"次生成账号：：： "+id);
-       }while (userService.getUserByUsername(id)==null);
+       }while (userService.getUserOrAdmin(id)!=null);
 
        return id;
     }

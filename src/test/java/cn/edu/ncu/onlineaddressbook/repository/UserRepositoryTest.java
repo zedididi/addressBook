@@ -30,12 +30,12 @@ public class UserRepositoryTest {
     public void getUsersByName(){
 
 
-        System.out.println(userRepository.getUsersByName("刘泽迪"));
+     //   System.out.println(userRepository.getUsersByName("刘泽迪"));
     }
 
     @Test
     public void updateLoginTimeOfUser(){
         userRepository.updateLoginTimeOfUser(new Timestamp(new Date().getTime()),"652928");
-        System.out.println(userRepository.getUserByUsername("652928"));
+       // System.out.println(userRepository.getUserByUsername("652928"));
     }
 }

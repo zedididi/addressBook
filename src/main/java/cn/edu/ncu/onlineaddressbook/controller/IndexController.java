@@ -118,19 +118,37 @@ public class IndexController {
         logger.info(status);
         model.addAttribute("status", status);
         model.addAttribute("tip","以上是你的账号登录错误信息！！！");
-        return "landing";
 
+        return "landing";
     }
 
+    /**
+     * 管理员登录
+     *
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping("/admin")
     public String adminPage(HttpServletRequest request,Model model){
+
         String username= (String) request.getAttribute("username");
         request.removeAttribute("username");
         logger.info("管理员登录：："+username);
-        userService.updateLoginTimeAndLoginTimesOfUser(new Timestamp(System.currentTimeMillis()),(userService.getUserByUsername(username).getLoginTimes()+1),username);
+        int disabledUsers=userService.getUserByEnabled(0).size();
+        int lockedUsers=userService.getUserByEnabled(0).size();
+        int normalUsers=userService.getUsersByEnabledAndLocked(1,1).size();
+        int allUsers=userService.getAllUsers().size();
+        userService.updateLoginTimeAndLoginTimesOfUser(new Timestamp(System.currentTimeMillis()),(userService.getUserOrAdmin(username).getLoginTimes()+1),username);
         model.addAttribute("username",username);
+        model.addAttribute("disabledUsers",disabledUsers);
+        model.addAttribute("lockedUsers",lockedUsers);
+        model.addAttribute("normalUsers",normalUsers);
+        model.addAttribute("allUsers",allUsers);
+
         return "/admin-index";
     }
+
     /**
      * 错误页面
      *
@@ -145,4 +163,5 @@ public class IndexController {
     public String error(){
         return "/admin/admin-404";
     }
+
 }

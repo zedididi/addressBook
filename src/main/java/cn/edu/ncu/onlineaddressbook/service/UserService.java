@@ -6,11 +6,17 @@ import cn.edu.ncu.onlineaddressbook.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -26,8 +32,6 @@ public class UserService implements UserDetailsService{
 
     private Logger logger= LoggerFactory.getLogger(getClass());
 
-
-
     @Autowired
     UserRepository userRepository;
 
@@ -35,13 +39,38 @@ public class UserService implements UserDetailsService{
     private RoleService roleService;
 
     /**
+     * 根据账号获取用户或管理员
+     *
+     * @param username
+     * @return
+     */
+    public User getUserOrAdmin(String username){
+        return userRepository.getUserOrAdmin(username);
+    }
+
+    /**
      * 获取所有用户
      *
      * @return
      */
-    public List<User> getAllUser(){
-        return userRepository.findAll();
+    public List<User> getAllUsers(){
+        return userRepository.getAllUsers(1);
     }
+
+    /**
+     * 分页查询
+     * 获取所有用户
+     *
+     * @return
+     */
+    public Page<User> getAllUsers(int pageNumber,int pageSize){
+
+        //分页信息
+        Pageable pageable=new PageRequest(pageNumber,pageSize);
+
+        return userRepository.getAllUsers(1,pageable);
+    }
+
 
     /**
      * 根据用户账号名查询用户
@@ -50,7 +79,74 @@ public class UserService implements UserDetailsService{
      * @return
      */
     public User getUserByUsername(String username){
-        return userRepository.getOne(username);
+        return userRepository.getUserByUsername(1,username);
+    }
+
+    /**
+     * 根据审核状态查询用户
+     *
+     * @param enabled
+     * @return
+     */
+    public List<User> getUserByEnabled(int enabled){
+        return userRepository.getUsersByEnabled(1,enabled);
+    }
+
+    /**
+     * 分页查询
+     * 根据审核状态查询用户
+     *
+     * @param enabled
+     * @return
+     */
+    public Page<User> getUserByEnabled(int enabled,int pageNumber,int pageSize){
+
+        return userRepository.getUsersByEnabled(1,enabled,new PageRequest(pageNumber,pageSize));
+    }
+
+    /**
+     * 根据禁用状态查询用户
+     *
+     * @param locked
+     * @return
+     */
+    public List<User> getUserByLocked(int locked){
+        return userRepository.getUsersByLocked(1,locked);
+    }
+
+    /**
+     * 分页查询
+     * 根据禁用状态查询用户
+     *
+     * @param locked
+     * @return
+     */
+    public Page<User> getUserByLocked(int locked,int pageNumber,int pageSize){
+        return userRepository.getUsersByEnabled(1,locked,new PageRequest(pageNumber,pageSize));
+    }
+
+    /**
+     * 根据审核状态，禁用状态查询用户
+     * @param enabled
+     * @param locked
+     * @return
+     */
+    public List<User> getUsersByEnabledAndLocked(int enabled,int locked){
+        return userRepository.getUsersByEnabledAndLocked(1,enabled,locked);
+    }
+
+    /**
+     * 分页查询
+     * 根据审核状态，禁用状态查询用户
+     *
+     * @param enabled
+     * @param locked
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    public Page<User> getUsersByEnabledAndLocked(int enabled,int locked,int pageNumber,int pageSize){
+        return userRepository.getUsersByEnabledAndLocked(1,enabled,locked,new PageRequest(pageNumber,pageSize));
     }
 
     /**
@@ -137,7 +233,7 @@ public class UserService implements UserDetailsService{
      * @return
      */
     public List<User> getUsersByName(String name){
-        return userRepository.getUsersByName(name);
+        return userRepository.getUsersByName(1,name);
     }
 
 
@@ -154,7 +250,7 @@ public class UserService implements UserDetailsService{
 
         logger.info("用户的用户名：{}",username);
 
-        User user=getUserByUsername(username);
+        User user=getUserOrAdmin(username);
 
         logger.info("用户信息：{}",user);
         if(user==null)

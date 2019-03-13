@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/assets/css/amazeui.min.css"/>
   <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
-<body>
+<body id="body">
 <!--[if lte IE 9]>
 <p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
   以获得更好的体验！</p>
@@ -23,7 +23,7 @@
 
 <header class="am-topbar am-topbar-inverse admin-header" id="username" th:alt="${username}">
   <div class="am-topbar-brand">
-    <strong>Amaze UI</strong> <small>后台管理模板</small>
+    <strong>NCU 网上通讯录</strong> <small>后台管理</small>
   </div>
 
   <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -41,7 +41,7 @@
           <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
         </ul>
       </li>
-      <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+      <!--<li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>-->
     </ul>
   </div>
 </header>
@@ -59,7 +59,7 @@
             <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 系统日志</a></li>
           </ul>
         </li>
-        <li><a href="admin-table.html"><span class="am-icon-table"></span> 表格</a></li>
+        <li><a href="/admin/table"><span class="am-icon-table"></span> 表格</a></li>
         <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 表单</a></li>
         <li><a href="#"><span class="am-icon-sign-out"></span> 注销</a></li>
       </ul>
@@ -89,87 +89,17 @@
       </div>
 
       <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-        <li><a  class="am-text-success"><span class="am-icon-btn am-icon-file-text"></span><br/>待审核用户<br/><p th:text="${disEnabledUsers}"></p></a></li>
-        <li><a  class="am-text-warning"><span class="am-icon-btn am-icon-briefcase"></span><br/>被禁用用户<br/><p th:text="${lockedUsers}"></p></a></li>
-        <li><a  class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br/>正常用户<br/><p th:text="${simplyUsers}"></p></a></li>
-        <li><a  class="am-text-secondary"><span class="am-icon-btn am-icon-user-md"></span><br/>总共用户<br/><p th:text="${allUsers}"></p></a></li>
+        <li><a onclick="getUser('disabled')" class="am-text-success"><span class="am-icon-btn am-icon-file-text"></span><br/>待审核用户<br/><p th:text="${disabledUsers}"></p></a></li>
+        <li><a onclick="getUser('locked')" class="am-text-warning"><span class="am-icon-btn am-icon-briefcase"></span><br/>被禁用用户<br/><p th:text="${lockedUsers}"></p></a></li>
+        <li><a onclick="getUser('normal')" class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br/>正常用户<br/><p th:text="${normalUsers}"></p></a></li>
+        <li><a onclick="getUser('all')" class="am-text-secondary"><span class="am-icon-btn am-icon-user-md"></span><br/>总共用户<br/><p th:text="${allUsers}"></p></a></li>
       </ul>
 
       <div class="am-g">
         <div class="am-u-sm-12">
-          <table class="am-table am-table-bd am-table-striped admin-content-table">
-            <thead>
-            <tr>
-              <th>ID</th><th>用户名</th><th>最后成交任务</th><th>成交订单</th><th>管理</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr><td>1</td><td>John Clark</td><td><a href="#">Business management</a></td> <td><span class="am-badge am-badge-success">+20</span></td>
-              <td>
-                <div class="am-dropdown" data-am-dropdown>
-                  <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                  <ul class="am-dropdown-content">
-                    <li><a href="#">1. 编辑</a></li>
-                    <li><a href="#">2. 下载</a></li>
-                    <li><a href="#">3. 删除</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            <tr><td>2</td><td>风清扬</td><td><a href="#">公司LOGO设计</a> </td><td><span class="am-badge am-badge-danger">+2</span></td>
-              <td>
-                <div class="am-dropdown" data-am-dropdown>
-                  <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                  <ul class="am-dropdown-content">
-                    <li><a href="#">1. 编辑</a></li>
-                    <li><a href="#">2. 下载</a></li>
-                    <li><a href="#">3. 删除</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            <tr><td>3</td><td>詹姆斯</td><td><a href="#">开发一款业务数据软件</a></td><td><span class="am-badge am-badge-warning">+10</span></td>
-              <td>
-                <div class="am-dropdown" data-am-dropdown>
-                  <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                  <ul class="am-dropdown-content">
-                    <li><a href="#">1. 编辑</a></li>
-                    <li><a href="#">2. 下载</a></li>
-                    <li><a href="#">3. 删除</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            <tr><td>4</td><td>云适配</td><td><a href="#">适配所有网站</a></td><td><span class="am-badge am-badge-secondary">+50</span></td>
-              <td>
-                <div class="am-dropdown" data-am-dropdown>
-                  <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                  <ul class="am-dropdown-content">
-                    <li><a href="#">1. 编辑</a></li>
-                    <li><a href="#">2. 下载</a></li>
-                    <li><a href="#">3. 删除</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-
-            <tr>
-              <td>5</td><td>呵呵呵</td>
-              <td><a href="#">基兰会获得BUFF</a></td>
-              <td><span class="am-badge">+22</span></td>
-              <td>
-                <div class="am-dropdown" data-am-dropdown>
-                  <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                  <ul class="am-dropdown-content">
-                    <li><a href="#">1. 编辑</a></li>
-                    <li><a href="#">2. 下载</a></li>
-                    <li><a href="#">3. 删除</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+        
+       <!-- 用户信息-->
+        
         </div>
       </div>
     </div>
@@ -195,5 +125,71 @@
 <!--<![endif]-->
 <script src="/assets/js/amazeui.min.js"></script>
 <script src="/assets/js/app.js"></script>
+<script>
+  
+  //转换时间格式
+  function timestampToTime(timestamp) {
+    var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = date.getDate() + ' ';
+    var h = date.getHours() + ':';
+    var m = date.getMinutes() + ':';
+    var s = date.getSeconds();
+    return Y+M+D+" "+h+m+s;
+  }
+  
+  //获取用户信息
+  function getUser(tip) {
+  
+    $.ajax({
+    
+      type:'POST',
+      url:'/user/'+tip,
+      success:function (data) {
+      
+        var showUser='<table class="am-table am-table-bd am-table-striped admin-content-table">\n' +
+                '            <thead>\n' +
+                '            <tr>\n' +
+                '              <th>ID</th><th>用户名</th><th>注册时间</th><th>最近登录</th><th>登陆次数</th>\n' +
+                '            </tr>\n' +
+                '            </thead>\n' +
+                '            <tbody>\n' ;
+        var obj=data;
+      
+        for (var i in obj){
+          var id=data[i].username;
+          var name=data[i].name;
+          var reTime=timestampToTime(data[i].registerTime);
+          var loTime=data[i].loginTime==null?"未登录":timestampToTime(data[i].loginTime);
+          var times=data[i].loginTimes;
+        
+          showUser+=
+                  '            <tr><td>'+id+'</td><td>'+name+'</td><td><a href="#">'+reTime+'</a></td><td>'+loTime+'</td><td><span class="am-badge am-badge-success">'+times+'</span></td>\n' +
+/*                  '              <td>\n' +
+                  '                <div class="am-dropdown" data-am-dropdown>\n' +
+                  '                  <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>\n' +
+                  '                  <ul class="am-dropdown-content">\n' +
+                  '                    <li><a href="#">1. 编辑</a></li>\n' +
+                  '                    <li><a href="#">2. 下载</a></li>\n' +
+                  '                    <li><a href="#">3. 删除</a></li>\n' +
+                  '                  </ul>\n' +
+                  '                </div>\n' +
+                  '              </td>\n' +*/
+                  '            </tr>\n';
+        
+        }
+      
+        showUser+=   '            </tbody>\n' +
+                '          </table>';
+      
+        $(".am-u-sm-12").html(showUser);
+      }
+    })
+  }
+  
+  
+  
+</script>
 </body>
 </html>

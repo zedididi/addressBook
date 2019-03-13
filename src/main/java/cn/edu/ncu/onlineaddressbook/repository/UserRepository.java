@@ -1,7 +1,11 @@
 package cn.edu.ncu.onlineaddressbook.repository;
 
 import cn.edu.ncu.onlineaddressbook.bean.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,17 +21,47 @@ import java.util.List;
  */
 
 @Repository
-public interface UserRepository extends JpaRepository<User,String> {
+public interface UserRepository extends JpaRepository<User,String>, JpaSpecificationExecutor<User>{
 
 
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1  and ur.username=u.username",countQuery = "select count(*) from user_role  where rid=?1 ",nativeQuery = true)
+    Page<User> getAllUsers(int rid, Pageable pageable );
 
-    List<User> getUsersByName(String name);
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.name=?2 and ur.username=u.username",nativeQuery = true)
+    List<User> getUsersByName(int rid,String name);
 
-    User getUserByUsername(String username);
+    @Query(value = "select u.* from users u where u.username=?1",nativeQuery = true)
+    User getUserOrAdmin(String username);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1  and ur.username=u.username",nativeQuery = true)
+    List<User> getAllUsers(int rid);
+
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.username=?2 and ur.username=u.username",nativeQuery = true)
+    User getUserByUsername(int rid,String username);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.enabled=?2 and ur.username=u.username",countQuery = "select count(*) from users u,user_role ur where ur.rid=?1 and u.enabled=?2 and ur.username=u.username",nativeQuery = true)
+    Page<User> getUsersByEnabled(int rid,int enabled,Pageable pageable);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.enabled=?2 and ur.username=u.username",nativeQuery = true)
+    List<User> getUsersByEnabled(int rid,int enabled);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.locked=?2 and ur.username=u.username",countQuery = "select count (*) from users u,user_role ur where ur.rid=?1 and u.locked=?2 and ur.username=u.username",nativeQuery = true)
+    Page<User> getUsersByLocked(int rid,int locked,Pageable pageable);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.locked=?2 and ur.username=u.username",nativeQuery = true)
+    List<User> getUsersByLocked(int rid,int locked);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.enabled=?2 and u.locked=?3 and ur.username=u.username",countQuery = "select count (*) from users u,user_role ur where ur.rid=?1 and u.enabled=?2 and u.locked=?3 and ur.username=u.username",nativeQuery = true)
+    Page<User> getUsersByEnabledAndLocked(int rid,int enabled,int locked,Pageable pageable);
+
+    @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.enabled=?2 and u.locked=?3 and ur.username=u.username",nativeQuery = true)
+    List<User> getUsersByEnabledAndLocked(int rid,int enabled,int locked);
+
     @Transactional
     @Modifying
-    @Query(value = "insert into users(username,password,name,enabled,locked,register_time,login_time,login_times) values(?1,?2,?3,?4,?5,?6,?7,?8)",nativeQuery = true)
-     int insertUser(String username, String password, String name, int enabled,Timestamp register_time, Timestamp login_time, int login_times);
+    @Query(value = "insert into users(username,password,name,enabled,register_time,login_time,login_times) values(?1,?2,?3,?4,?5,?6,?7)",nativeQuery = true)
+     int insertUser(String username, String password, String name, int enabled,Timestamp registerTime, Timestamp loginTime, int loginTimes);
 
     @Transactional
     @Modifying
