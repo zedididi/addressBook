@@ -5,8 +5,10 @@ import cn.edu.ncu.onlineaddressbook.service.UserService;
 import org.hibernate.validator.constraints.EAN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -27,55 +29,126 @@ public class UserController {
     /**
      * 获取正常用户
      *
-     * @param param 1:分页 0：不分页
+     * @param pageNumber 当前第几页
+     * @param pageSize   一页大小
      * @return
      */
     @PostMapping("/normal")
     @ResponseBody
-    public List<User> getNormalUsers(String param){
+    public List<User> getNormalUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
 
-        if ("1".equals(param))
+        System.out.println(pageNumber+"    "+pageSize);
+
+        if (pageNumber==null&&pageSize==null)
             return userService.getUsersByEnabledAndLocked(1,1);
         else
-            return userService.getUsersByEnabledAndLocked(1,1);
+            return userService.getUsersByEnabledAndLocked(1, 1, pageNumber-1, pageSize).getContent();
+
+    }
+
+    /**
+     * 得到页数 一页15条记录
+     *
+     * @return
+     */
+    @PostMapping("/normal/num")
+    @ResponseBody
+    public int getNormalNum(){
+
+        int size=userService.getUsersByEnabledAndLocked(1,1).size();
+        System.out.println("size::::::"+size);
+        return getNum(size);
     }
 
     /**
      * 获取审核中用户
      *
-     * @param param 1:分页 0：不分页
+     * @param pageNumber 当前第几页
+     * @param pageSize   一页大小
      * @return
      */
     @ResponseBody
     @PostMapping("/disabled")
-    public List<User> getDisabledUsers(String param){
+    public List<User> getDisabledUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
         return userService.getUserByEnabled(0);
+    }
+
+    /**
+     *得到页数 一页15条记录
+     *
+     * @return
+     */
+    @PostMapping("/disabled/num")
+    @ResponseBody
+    public int getDisabledNum(){
+
+        int size=userService.getUserByEnabled(0).size();
+        System.out.println("size::::::"+size);
+        return getNum(size);
     }
 
     /**
      * 获取被禁止登录的用户
      *
-     * @param param 1:分页 0：不分页
+     * @param pageNumber 当前第几页
+     * @param pageSize   一页大小
      * @return
      */
     @ResponseBody
     @PostMapping("/locked")
-    public List<User> getLockedUsers(){
+    public List<User> getLockedUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
         return userService.getUserByLocked(0);
     }
 
+    /**
+     * 得到页数 一页15条记录
+     *
+     * @return
+     */
+    @PostMapping("/locked/num")
+    @ResponseBody
+    public int getLockedNum(){
+        int size=userService.getUserByLocked(0).size();
+        return getNum(size);
+    }
 
     /**
      * 获取所有用户
      *
-     * @param param 1:分页 0：不分页
+     * @param pageNumber 当前第几页
+     * @param pageSize   一页大小
      * @return
      */
     @ResponseBody
     @PostMapping("/all")
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
         return userService.getAllUsers();
     }
 
+    /**
+     * 得到页数 一页15条记录
+     *
+     * @return
+     */
+    @PostMapping("/all/num")
+    @ResponseBody
+    public int getAllNum(){
+
+        return getNum(userService.getAllUsers().size());
+
+    }
+
+
+    public int getNum(int size){
+
+        int number;
+        if (size==0)
+            number=0;
+        else if(size%15==0)
+            number=size/15;
+        else
+            number=size/15+1;
+        return number;
+    }
 
 }

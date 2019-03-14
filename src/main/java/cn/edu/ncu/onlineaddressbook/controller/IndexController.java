@@ -132,8 +132,9 @@ public class IndexController {
     @RequestMapping("/admin")
     public String adminPage(HttpServletRequest request,Model model){
 
-        String username= (String) request.getAttribute("username");
-        request.removeAttribute("username");
+       // String username= (String) request.getAttribute("username");
+        String username= (String) request.getSession().getAttribute("username");
+       // request.removeAttribute("username");
         logger.info("管理员登录：："+username);
         int disabledUsers=userService.getUserByEnabled(0).size();
         int lockedUsers=userService.getUserByEnabled(0).size();

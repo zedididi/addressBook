@@ -134,7 +134,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                         String username=SecurityContextHolder.getContext().getAuthentication().getName();
                         if (roleService.getRolesOfUser(username).get(0).getRoleName().equals("ROLE_ADMIN")){
-                            httpServletRequest.setAttribute("username",username);
+                            httpServletRequest.getSession().setAttribute("username",username);
                             httpServletRequest.getRequestDispatcher("/admin").forward(httpServletRequest,httpServletResponse);
                         }
                         else
