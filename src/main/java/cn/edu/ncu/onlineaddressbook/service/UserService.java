@@ -118,7 +118,7 @@ public class UserService implements UserDetailsService{
      * @return
      */
     public Page<User> getUserByLocked(int locked,int pageNumber,int pageSize){
-        return userRepository.getUsersByEnabled(1,locked,new PageRequest(pageNumber,pageSize));
+        return userRepository.getUsersByLocked(1,locked,new PageRequest(pageNumber,pageSize));
     }
 
     /**

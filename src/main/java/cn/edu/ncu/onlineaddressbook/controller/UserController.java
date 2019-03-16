@@ -55,9 +55,9 @@ public class UserController {
     @ResponseBody
     public int getNormalNum(){
 
-        int size=userService.getUsersByEnabledAndLocked(1,1).size();
-        System.out.println("size::::::"+size);
-        return getNum(size);
+       /* int size=userService.getUsersByEnabledAndLocked(1,1).size();
+        System.out.println("size::::::"+size);*/
+        return userService.getUsersByEnabledAndLocked(1,1).size();
     }
 
     /**
@@ -70,7 +70,14 @@ public class UserController {
     @ResponseBody
     @PostMapping("/disabled")
     public List<User> getDisabledUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
-        return userService.getUserByEnabled(0);
+
+        System.out.println(pageNumber+"    "+pageSize);
+
+        if (pageNumber==null&&pageSize==null)
+            return userService.getUserByEnabled(0);
+        else
+            return userService.getUserByEnabled(0,pageNumber-1, pageSize).getContent();
+
     }
 
     /**
@@ -84,7 +91,7 @@ public class UserController {
 
         int size=userService.getUserByEnabled(0).size();
         System.out.println("size::::::"+size);
-        return getNum(size);
+        return userService.getUserByEnabled(0).size();
     }
 
     /**
@@ -97,7 +104,14 @@ public class UserController {
     @ResponseBody
     @PostMapping("/locked")
     public List<User> getLockedUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
-        return userService.getUserByLocked(0);
+
+        System.out.println(pageNumber+"    "+pageSize);
+
+        if (pageNumber==null&&pageSize==null)
+            return userService.getUserByLocked(0);
+        else
+            return userService.getUserByLocked(0,pageNumber-1, pageSize).getContent();
+
     }
 
     /**
@@ -108,8 +122,8 @@ public class UserController {
     @PostMapping("/locked/num")
     @ResponseBody
     public int getLockedNum(){
-        int size=userService.getUserByLocked(0).size();
-        return getNum(size);
+        System.out.println("locked:::"+userService.getUserByLocked(0).size());
+        return userService.getUserByLocked(0).size();
     }
 
     /**
@@ -122,7 +136,12 @@ public class UserController {
     @ResponseBody
     @PostMapping("/all")
     public List<User> getAllUsers(@RequestParam(required = false)Integer pageNumber, @RequestParam(required = false)Integer pageSize){
-        return userService.getAllUsers();
+
+        if (pageNumber==null&&pageSize==null)
+            return userService.getAllUsers();
+        else
+            return userService.getAllUsers(pageNumber-1, pageSize).getContent();
+
     }
 
     /**

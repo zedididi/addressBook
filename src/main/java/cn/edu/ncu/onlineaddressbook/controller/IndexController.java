@@ -137,7 +137,7 @@ public class IndexController {
        // request.removeAttribute("username");
         logger.info("管理员登录：："+username);
         int disabledUsers=userService.getUserByEnabled(0).size();
-        int lockedUsers=userService.getUserByEnabled(0).size();
+        int lockedUsers=userService.getUserByLocked(0).size();
         int normalUsers=userService.getUsersByEnabledAndLocked(1,1).size();
         int allUsers=userService.getAllUsers().size();
         userService.updateLoginTimeAndLoginTimesOfUser(new Timestamp(System.currentTimeMillis()),(userService.getUserOrAdmin(username).getLoginTimes()+1),username);
