@@ -45,6 +45,16 @@ public class UserService implements UserDetailsService{
     }
 
     /**
+     * 根据管理账号名查询管理员
+     *
+     * @param username
+     * @return
+     */
+    public User getAdminByUsername(String username){
+        return userRepository.getUserByUsername(2,username);
+    }
+
+    /**
      * 获取所有用户
      *
      * @return
@@ -76,6 +86,36 @@ public class UserService implements UserDetailsService{
      */
     public User getUserByUsername(String username){
         return userRepository.getUserByUsername(1,username);
+    }
+
+    /**
+     * 根据专业查询用户
+     *
+     * @param major
+     * @return
+     */
+    public List<User> getUserByMajor(String major){
+        return userRepository.getUsersByMajor(1,major);
+    }
+
+    /**
+     * 根据班级查询用户
+     *
+     * @param classs
+     * @return
+     */
+    public List<User> getUserByClasss(String classs){
+        return userRepository.getUsersByClasss(1,classs);
+    }
+
+    /**
+     * 根据入学年份查询用户
+     *
+     * @param enYear
+     * @return
+     */
+    public List<User> getUserByEnYear(String enYear){
+        return userRepository.getUsersByEnYear(1,enYear);
     }
 
     /**

@@ -133,12 +133,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
 
                         String username=SecurityContextHolder.getContext().getAuthentication().getName();
-                        if (roleService.getRolesOfUser(username).get(0).getRoleName().equals("ROLE_ADMIN")){
+                       // if (roleService.getRolesOfUser(username).get(0).getRoleName().equals("ROLE_ADMIN")){
                             httpServletRequest.getSession().setAttribute("username",username);
-                            httpServletRequest.getRequestDispatcher("/admin").forward(httpServletRequest,httpServletResponse);
-                        }
-                        else
-                            System.out.println("USER");
+                            httpServletRequest.getRequestDispatcher("/loginPage").forward(httpServletRequest,httpServletResponse);
+                        //}
+                        //else
+                        //    System.out.println("USER");
 
                     }
                 })

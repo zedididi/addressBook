@@ -170,4 +170,26 @@ public class UserController {
         return number;
     }
 
+    @PostMapping("/update/enabled")
+    @ResponseBody
+    public void updateEnabled(String name,int enabled){
+        System.out.println("name:::"+name+"   enabled:::"+enabled);
+        userService.updateEnabledOfUser(enabled,name);
+    }
+
+    @PostMapping("/query")
+    @ResponseBody
+    public List<User> queryUser(String type,String info){
+
+        switch (type){
+            case "id":return (List<User>) userService.getUserByUsername(info);
+            case "name":return userService.getUsersByName(info);
+            case "year":return userService.getUserByEnYear(info);
+            case "major":return userService.getUserByMajor(info);
+            case "classs":return userService.getUserByClasss(info);
+        }
+
+        return null;
+    }
+
 }

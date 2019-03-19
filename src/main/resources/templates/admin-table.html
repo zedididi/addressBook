@@ -51,7 +51,7 @@
   <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
     <div class="am-offcanvas-bar admin-offcanvas-bar">
       <ul class="am-list admin-sidebar-list">
-        <li><a href="/admin"><span class="am-icon-home"></span> 首页</a></li>
+        <li><a href="/loginPage"><span class="am-icon-home"></span> 首页</a></li>
         <li class="admin-parent">
           <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 页面模块 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
           <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
@@ -188,18 +188,9 @@
 	
     //获取用户信息并显示
   function getUserOfTable(tip,init) {
-	   
-
+    
       var num=0;
-      
-    /*  $.ajax({
-          type:'POST',
-          url:'/user/'+tip+'/num',
-          async:'false',
-          success:function (data) {
-              num = data;
-              console.info("num::"+num);*/
-  
+    
             $.ajax({
     
               type:'POST',
@@ -272,7 +263,7 @@
                             '                <td>\n' +
                             '                  <div class="am-btn-toolbar">\n' +
                             '                    <div class="am-btn-group am-btn-group-xs">\n' +
-                            '                      <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 审核通过</button>\n' +
+                            '                      <button  class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick=" changeDisabledStatus('+id+','+tip+','+init+')"><span class="am-icon-pencil-square-o"></span> 审核通过</button>\n' +
                             '                      <button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><span class="am-icon-search-minus"></span> 查看用户</button>\n' +
                             '                      <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除用户</button>\n' +
                             '                    </div>\n' +
@@ -350,13 +341,25 @@
                 $('#table-div').html(s);
               }
             });
-            
-      /*    }
-      });
-      */
-    
-    
+  }
   
+  function changeDisabledStatus(id,tip,init) {
+    //var id=$(this).id;
+    console.info("id ::::"+id);
+    //  getUserOfTable(tip,init);
+    $.ajax({
+    
+      type:'POST',
+      url:'/user/update/enabled',
+      data:{
+        "name":id,
+        "enabled":1
+      }
+      /*success:function (data) {
+        num = data;
+        console.info("num::"+num);
+      }*/
+    });
   }
 </script>
 </body>

@@ -123,31 +123,40 @@ public class IndexController {
     }
 
     /**
-     * 管理员登录
+     * 管理员/用户登录
      *
      * @param request
      * @param model
      * @return
      */
-    @RequestMapping("/admin")
-    public String adminPage(HttpServletRequest request,Model model){
+    @RequestMapping("/loginPage")
+    public String LoginPage(HttpServletRequest request,Model model){
 
        // String username= (String) request.getAttribute("username");
         String username= (String) request.getSession().getAttribute("username");
        // request.removeAttribute("username");
-        logger.info("管理员登录：："+username);
+
         int disabledUsers=userService.getUserByEnabled(0).size();
         int lockedUsers=userService.getUserByLocked(0).size();
         int normalUsers=userService.getUsersByEnabledAndLocked(1,1).size();
         int allUsers=userService.getAllUsers().size();
+        String name=userService.getUserOrAdmin(username).getName();
         userService.updateLoginTimeAndLoginTimesOfUser(new Timestamp(System.currentTimeMillis()),(userService.getUserOrAdmin(username).getLoginTimes()+1),username);
         model.addAttribute("username",username);
+        model.addAttribute("name",name);
         model.addAttribute("disabledUsers",disabledUsers);
         model.addAttribute("lockedUsers",lockedUsers);
         model.addAttribute("normalUsers",normalUsers);
         model.addAttribute("allUsers",allUsers);
 
-        return "/admin-index";
+         if (userService.getAdminByUsername(username)!=null) {
+             logger.info("管理员登录：："+username);
+             return "/admin-index";
+
+         }else {
+             logger.info("用户登录：："+username);
+             return "/user-index";
+         }
     }
 
     /**

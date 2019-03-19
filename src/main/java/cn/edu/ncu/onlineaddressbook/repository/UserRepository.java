@@ -30,8 +30,18 @@ public interface UserRepository extends JpaRepository<User,String>, JpaSpecifica
     @Query(value = "select u.* from users u,user_role ur where ur.rid=?1 and u.name=?2 and ur.username=u.username",nativeQuery = true)
     List<User> getUsersByName(int rid,String name);
 
+    @Query(value = "select u.* from users u,user_role ur,user_info ui where ur.rid=?1 and ui.major=?2 and ur.username=u.username and ui.username=u.username",nativeQuery = true)
+    List<User> getUsersByMajor(int rid,String major);
+
+    @Query(value = "select u.* from users u,user_role ur,user_info ui where ur.rid=?1 and ui.classs=?2 and ur.username=u.username and ui.username=u.username",nativeQuery = true)
+    List<User> getUsersByClasss(int rid,String classs);
+
+    @Query(value = "select u.* from users u,user_role ur,user_info ui where ur.rid=?1 and ui.enrollment_year=?2 and ur.username=u.username and ui.username=u.username",nativeQuery = true)
+    List<User> getUsersByEnYear(int rid,String enYear);
+
     @Query(value = "select u.* from users u where u.username=?1",nativeQuery = true)
     User getUserOrAdmin(String username);
+
 
     @Query(value = "select u.* from users u,user_role ur where ur.rid=?1  and ur.username=u.username",nativeQuery = true)
     List<User> getAllUsers(int rid);
