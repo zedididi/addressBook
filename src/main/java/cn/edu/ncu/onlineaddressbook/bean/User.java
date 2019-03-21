@@ -17,8 +17,6 @@ import java.util.Date;
  */
 
 @Entity
-@Setter
-@Getter
 @Table(name = "users")
 @Proxy(lazy = false)
 public class User {

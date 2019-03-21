@@ -26,7 +26,7 @@ public class UserInfo{
     @Id
     private String username;
 
-    @Column(name = "password")
+  //  @Column(name = "password")
     private String password;
     @Column(name = "name")
     private String name;
@@ -69,6 +69,20 @@ public class UserInfo{
     public UserInfo(String username, String password, String name, String major, String classs, String enrollmentYear, String particularYear, String company, String city, String address, String email) {
         this.username = username;
         this.password = password;
+        this.name = name;
+        this.major = major;
+        this.classs = classs;
+        this.enrollmentYear = enrollmentYear;
+        this.particularYear = particularYear;
+        this.company = company;
+        this.city = city;
+        this.address = address;
+        this.email = email;
+    }
+
+
+    public UserInfo(String username, String name, String major, String classs, String enrollmentYear, String particularYear, String company, String city, String address, String email) {
+        this.username = username;
         this.name = name;
         this.major = major;
         this.classs = classs;
