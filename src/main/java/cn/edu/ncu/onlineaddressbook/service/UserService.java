@@ -208,6 +208,10 @@ public class UserService implements UserDetailsService{
         return userRepository.updatePasswordOfUser(password,username);
     }
 
+    @Transactional
+    public int updateNameOfUser(String name,String username){
+        return userRepository.updateNameOfUser(name,username);
+    }
     /**
      * 根据用户账号名查询用户 修改用户是否审核通过（审核通过|审核未通过）
      *

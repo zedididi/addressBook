@@ -78,6 +78,12 @@ public interface UserRepository extends JpaRepository<User,String>, JpaSpecifica
     @Query(value = "update users set password=?1 where username=?2",nativeQuery = true)
     int  updatePasswordOfUser(String password,String username);
 
+
+    @Transactional
+    @Modifying
+    @Query(value = "update users set `name`=?1 where username=?2",nativeQuery = true)
+    int  updateNameOfUser(String name,String username);
+
     @Transactional
     @Modifying
     @Query(value = "update users set enabled=?1 where username=?2",nativeQuery = true)

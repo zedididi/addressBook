@@ -93,10 +93,12 @@ public class IndexController {
         userInfo.setPassword(new BCryptPasswordEncoder().encode(userInfo.getPassword()));
         User user=new User(userInfo.getUsername(),userInfo.getPassword(),userInfo.getName());
         if (!(userService.insertUser(user)==1&&userInfoService.insertUserInfo(userInfo)==1&&userRoleService.insertUserRole(status,1)==1)) {
+
             status = "注册失败      请再次注册！！！";
             logger.info(status);
             model.addAttribute("tip","以上是提示消息！！！");
         }else {
+            userInfoRedisService.insertUserInfo(userInfo);
             logger.info("注册成功：{}", userInfo);
             model.addAttribute("tip","以上是你的账号，请务必记住！！！");
         }

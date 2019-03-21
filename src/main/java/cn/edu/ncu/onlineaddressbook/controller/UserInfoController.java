@@ -4,6 +4,7 @@ import cn.edu.ncu.onlineaddressbook.bean.User;
 import cn.edu.ncu.onlineaddressbook.bean.UserInfo;
 import cn.edu.ncu.onlineaddressbook.service.UserInfoRedisService;
 import cn.edu.ncu.onlineaddressbook.service.UserInfoService;
+import cn.edu.ncu.onlineaddressbook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,9 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserInfoRedisService userInfoRedisService;
@@ -61,11 +65,14 @@ public class UserInfoController {
     @PostMapping("/change")
     public String changeUserInfo(UserInfo userInfo, Model model){
 
-        System.out.println("CHANGE++userinfo"+userInfo);
+        System.out.println("CHANGE++userInfo"+userInfo);
         String status;
 
-        if (userInfoService.updateUser(userInfo)==1)
-            status="修改成功!!!";
+        UserInfo oldUserInfo=userInfoRedisService.getUserByUsername(userInfo.getUsername());
+        if (userInfoService.updateUser(userInfo)==1&&userService.updateNameOfUser(userInfo.getName(),userInfo.getUsername())==1) {
+            userInfoRedisService.updateUserInfo(oldUserInfo,userInfo);
+            status = "修改成功!!!";
+        }
         else
             status="修改失败!!!";
 
