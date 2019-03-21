@@ -68,6 +68,7 @@ public class RedisService {
     public void deleteKey(String key){
         redisTemplate.delete(key);
     }
+
     /**
      * 删除多个key
      *

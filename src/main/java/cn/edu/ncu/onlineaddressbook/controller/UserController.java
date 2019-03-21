@@ -55,8 +55,6 @@ public class UserController {
     @ResponseBody
     public int getNormalNum(){
 
-       /* int size=userService.getUsersByEnabledAndLocked(1,1).size();
-        System.out.println("size::::::"+size);*/
         return userService.getUsersByEnabledAndLocked(1,1).size();
     }
 

@@ -2,6 +2,7 @@ package cn.edu.ncu.onlineaddressbook.controller;
 
 import cn.edu.ncu.onlineaddressbook.bean.User;
 import cn.edu.ncu.onlineaddressbook.bean.UserInfo;
+import cn.edu.ncu.onlineaddressbook.service.UserInfoRedisService;
 import cn.edu.ncu.onlineaddressbook.service.UserInfoService;
 import cn.edu.ncu.onlineaddressbook.service.UserRoleService;
 import cn.edu.ncu.onlineaddressbook.service.UserService;
@@ -45,6 +46,8 @@ public class IndexController {
     @Autowired
     private UserRoleService userRoleService;
 
+    @Autowired
+    private UserInfoRedisService userInfoRedisService;
     /**
      * 登录页面
      *
@@ -157,6 +160,22 @@ public class IndexController {
              logger.info("用户登录：："+username);
              return "/user-index";
          }
+    }
+
+
+    /**
+     *
+     *
+     * @return
+     */
+    @RequestMapping("/form")
+    public String userForm(HttpServletRequest request, Model model){
+
+        String username= (String) request.getSession().getAttribute("username");
+        logger.info("用户登录：FORM："+username);
+        UserInfo userInfo=userInfoRedisService.getUserByUsername(username);
+        model.addAttribute("userInfo",userInfo);
+        return "user-form";
     }
 
     /**

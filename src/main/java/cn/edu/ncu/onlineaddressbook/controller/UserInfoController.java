@@ -2,9 +2,11 @@ package cn.edu.ncu.onlineaddressbook.controller;
 
 import cn.edu.ncu.onlineaddressbook.bean.User;
 import cn.edu.ncu.onlineaddressbook.bean.UserInfo;
+import cn.edu.ncu.onlineaddressbook.service.UserInfoRedisService;
 import cn.edu.ncu.onlineaddressbook.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,8 +25,23 @@ public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private UserInfoRedisService userInfoRedisService;
 
     @PostMapping("/query/{type}")
+    @ResponseBody
+    public List<UserInfo>  queryUserInfo(@PathVariable String type, String info){
+
+        List<UserInfo> userInfoList=new ArrayList<>();
+
+        switch(type){
+            case "id": userInfoList.add(userInfoRedisService.getUserByUsername(info.trim())) ; return userInfoList;
+            default: return (List<UserInfo>) userInfoRedisService.getUsersByOption(type,info.trim());
+        }
+
+    }
+
+  /*  @PostMapping("/query/{type}")
     @ResponseBody
     public List<UserInfo>  QueryUserInfo(@PathVariable String type, String info){
 
@@ -39,6 +56,24 @@ public class UserInfoController {
         }
 
         return null;
+    }*/
+
+    @PostMapping("/change")
+    public String changeUserInfo(UserInfo userInfo, Model model){
+
+        System.out.println("CHANGE++userinfo"+userInfo);
+        String status;
+
+        if (userInfoService.updateUser(userInfo)==1)
+            status="修改成功!!!";
+        else
+            status="修改失败!!!";
+
+        model.addAttribute("status", status);
+        model.addAttribute("tip","以上是你的账号登录错误信息！！！");
+        return "landing";
+
     }
+
 
 }

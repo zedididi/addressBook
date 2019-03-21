@@ -85,13 +85,32 @@ public class RedisConfigTest {
     }
 
     @Test
+    public void testZSetOperation() throws Exception{
+        UserVo userVo = new UserVo();
+        userVo.setAddress("北京");
+        userVo.setName("jantent");
+        userVo.setAge(23);
+        UserVo auserVo = new UserVo();
+        auserVo.setAddress("n柜昂周");
+        auserVo.setName("antent");
+        auserVo.setAge(22);
+        zSetOperations.add("user:test:zSet", auserVo,auserVo.getAge());
+      /*  Set<Object> result = (Set<Object>) zSetOperations.reverseRange(userVo,0,1);
+        System.out.println(result);*/
+    }
+
+    @Test
     public void HashOperations() throws Exception{
         UserVo userVo = new UserVo();
         userVo.setAddress("南昌");
         userVo.setName("jantent");
         userVo.setAge(23);
-        hashOperations.put("hash:user",userVo.getName(),userVo);
-        System.out.println(hashOperations.get("hash:user",userVo.getName()));
+        UserVo userVo1 = new UserVo();
+        userVo1.setAddress("北京11");
+        userVo1.setName("jantent");
+        userVo1.setAge(2311);
+        hashOperations.put("hash:user",userVo1.getName(),userVo1);
+        System.out.println(hashOperations.get("hash:user",userVo1.getName()));
     }
 
     @Test
@@ -100,9 +119,16 @@ public class RedisConfigTest {
         userVo.setAddress("北京");
         userVo.setName("jantent");
         userVo.setAge(23);
-        listOperations.leftPush("list:user",userVo);
+        UserVo userVo1 = new UserVo();
+        userVo1.setAddress("北京11");
+        userVo1.setName("jantent11");
+        userVo1.setAge(2311);
+       // listOperations.leftPush("list:user",userVo);
+       // listOperations.leftPush("list:user",userVo1);
      //   System.out.println(listOperations.leftPop("list:user"));
         // pop之后 值会消失
-  //      System.out.println(listOperations.leftPop("list:user"));
+   //     System.out.println(listOperations.leftPop("list:user"));
+
+        listOperations.remove("list:user",1,userVo);
     }
 }

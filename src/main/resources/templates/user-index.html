@@ -52,7 +52,7 @@
 		<div class="am-offcanvas-bar admin-offcanvas-bar">
 			<ul class="am-list admin-sidebar-list">
 				<li><a href="/loginPage"><span class="am-icon-home"></span> 首页</a></li>
-				<li class="admin-parent"><a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 修改个人资料 <span class="am-icon-angle-right am-fr am-margin-right"></span></a></li>
+				<li class="admin-parent"><a class="am-cf" href="/form"><span class="am-icon-file"></span> 修改个人资料 <span class="am-icon-angle-right am-fr am-margin-right"></span></a></li>
 				<li><a href="#"><span class="am-icon-sign-out"></span> 注销</a></li>
 			</ul>
 			
@@ -111,6 +111,9 @@
 					<!-- 用户信息-->
 				
 				</div>
+				<div class="am-u-sm-12" id="userInfo">
+				
+				</div>
 			</div>
 		</div>
 		
@@ -120,7 +123,10 @@
 		</footer>
 	</div>
 	<!-- content end -->
+
 </div>
+
+
 
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
@@ -143,9 +149,7 @@
 
     // select change绑定
     $('#table').change(function () {
-        console.info("table::",option);
          option=$('#table').val();
-        console.info("table::",option);
     });
     
     function queryUsers() {
@@ -170,7 +174,7 @@
                     '              <th>ID</th><th>用户名</th><th>专业</th><th>手机号</th><th>入学年份</th>\n' +
                     '            </tr>\n' +
                     '            </thead>\n' +
-                    '            <tbody>\n' ;
+                    '            <tbody >\n' ;
                 var obj=data;
 
                 for (var i in obj){
@@ -181,21 +185,130 @@
                     var enYear=data[i].enrollmentYear;
 
                     showUser+=
-                        '            <tr><td>'+id+'</td><td>'+name+'</td><td>'+major+'</td><td>'+address+'</td><td><span class="am-badge am-badge-success">'+enYear+'</span></td>\n' +
+                        '          <tr><td id="'+id+'"><button id="'+id+'" type="button"\n' +
+                        '  class="show-or-hide">'+id+'</button></td><td>'+name+'</td><td>'+major+'</td><td>'+address+'</td><td><span class="am-badge am-badge-success">'+enYear+'</span></td>\n' +
                         '            </tr>\n';
+                    
                 }
 
                 showUser+=   '            </tbody>\n' +
                     '          </table>';
 
                 $("#info").html(showUser);
-                
+                $('.show-or-hide').click(function () {
+                    console.info("tetstsststtsts");
+                    $('#info').hide(1000);
+                    $('#userInfo').show(1000);
+                    $(this).addClass("select");
+                    var username=$(this).attr('id');
+                    showUserInfo(username);
+                    console.info("id:::::::::::::"+username);
+                })
 		}
 		});
     }
 
+    function showUserInfo(username){
+		
+        $.ajax({
+			
+            type:'POST',
+            url:'/userInfo/query/id',
+            dataType:'JSON',
+            data:{
+                "type":"id",
+                "info":username
+            },
+            success:function(data) {
+				
+                
+                var obj = data;
+                for (var i in obj) {
+                    var id = data[i].username;
+                    var name = data[i].name;
+                    var major = data[i].major;
+                    var address = data[i].address;
+                    var enYear = data[i].enrollmentYear;
+                    var paYear = data[i].particularYear;
+                    var company = toNull(data[i].company);
+                    var city = toNull(data[i].city);
+                    var classs = data[i].classs;
+                    var email = toNull(data[i].email);
 
+					var showUser = '<div class="am-modal-dialog">\n' +
+                        '        <div class="am-modal-hd">详细信息\n' +
+                        '           <a href="javascript: open()" class="am-close am-close-spin" data-am-modal-close>&times;</a>\n' +
+                        '        </div>\n' +
+                        '        <div class="am-modal-bd">\n' +
+						'           <hr>' +
+						'           <ul>' +
+						'               <li>用户ID:</li>' +
+						'                  <ul>' +
+						'                   <li>'+id+'</li>' +
+						'                  </ul>' +
+						'               <li>用户名：</li>' +
+						'                  <ul>' +
+                        '                   <li>'+name+'</li>' +
+						'                  </ul>'+
+						'               <li>专 业：</li>' +
+						'                  <ul>' +
+                        '                   <li>'+major+'</li>' +
+						'                  </ul>'+
+                        '               <li>班 级：</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+classs+'</li>' +
+                        '                  </ul>'+
+						'               <li>入学年份：</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+enYear+'</li>' +
+                        '                  </ul>'+
+						'               <li>毕业年份：</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+paYear+'</li>' +
+                        '                  </ul>'+
+						'               <li>手机号：</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+address+'</li>' +
+                        '                  </ul>'+
+						'               <li>城 市：</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+city+'</li>' +
+                        '                  </ul>'+
+						'               <li>公 司：</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+company+'</li>' +
+                        '                  </ul>'+
+						'               <li>Email</li>' +
+                        '                  <ul>' +
+                        '                   <li>'+email+'</li>' +
+                        '                  </ul>'+
+						'           </ul>' +
+                        '        </div>\n' +
+                        '      </div>';
+                }
+                $('#userInfo').html(showUser);
+            }
+		})
+	}
 
+	function toNull(s){
+        if (s==null)
+            return "";
+        else
+            return s;
+	}
+    $('.show-or-hide').click(function () {
+        console.info("tetstsststtsts");
+        showUserInfo();
+        $('#info').hide(1000);
+        $('#test').show(1000);
+    }).addClass("select");
+	
+	function open() {
+        $('#info').show(1000);
+        $('#userInfo').hide(1000);
+    }
+	
 </script>
 </body>
 </html>
